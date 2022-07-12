@@ -1,0 +1,1233 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{ads-loanvalidation-simulation-report}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{analyze-loan-approval-decisions-automated-with-ibm-automation-decision-services}{%
+\section{Analyze loan approval decisions automated with IBM Automation
+Decision
+Services}\label{analyze-loan-approval-decisions-automated-with-ibm-automation-decision-services}}
+
+\hypertarget{build-trust-in-your-decision-automation-with-ibm-cloud-pak-for-business-automation}{%
+\subsection{Build trust in your decision automation with IBM Cloud Pak
+for Business
+Automation}\label{build-trust-in-your-decision-automation-with-ibm-cloud-pak-for-business-automation}}
+
+This notebook shows the exploitation of a dataset of loan approvals
+automated by IBM Cloud Pak for Business Automation. More precisely we
+applied Automation Decision Services to model a low code decision
+service and deploy it as an automation REST endpoint. Form there we use
+a simulation microservice project called SimuLatte to play a set of
+requests, compute the decisions and apply an analytical notebook to get
+insights.
+
+Each decision captures the request with all input parameters, the answer
+with all output parameters computed by the decision logic including
+business rules and ML models, and the trace. In the trace you find the
+list of the executed rules and ML models.
+
+The dataset contains 5000 automated decisions.
+
+    \hypertarget{read-the-decision-dataset}{%
+\subsection{1 - Read the decision
+dataset}\label{read-the-decision-dataset}}
+
+This report post-processes the result of a simulation that wrote a
+dataset of automated decisions in a data lake or a local file system.
+The first decisions found in the simulation dataset look like below:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{json}
+
+\PY{c+c1}{\PYZsh{}!pip install requests}
+\PY{c+c1}{\PYZsh{}import requests}
+
+\PY{o}{!}pip install pandas
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+
+\PY{o}{!}pip install urllib3
+\PY{k+kn}{import} \PY{n+nn}{urllib}
+
+\PY{k+kn}{from} \PY{n+nn}{urllib}\PY{n+nn}{.}\PY{n+nn}{parse} \PY{k+kn}{import} \PY{n}{urlencode}
+\PY{k+kn}{from} \PY{n+nn}{urllib}\PY{n+nn}{.}\PY{n+nn}{request} \PY{k+kn}{import} \PY{n}{Request}\PY{p}{,} \PY{n}{urlopen}
+
+\PY{k+kn}{from} \PY{n+nn}{pathlib} \PY{k+kn}{import} \PY{n}{Path}
+\PY{k+kn}{import} \PY{n+nn}{json}
+\PY{k+kn}{import} \PY{n+nn}{random}
+\PY{k+kn}{import} \PY{n+nn}{datetime}
+\PY{k+kn}{import} \PY{n+nn}{os}
+\PY{k+kn}{import} \PY{n+nn}{sys}
+\PY{k+kn}{import} \PY{n+nn}{requests}
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{tqdm}
+\PY{k+kn}{import} \PY{n+nn}{uuid}
+\PY{k+kn}{import} \PY{n+nn}{plotly}
+\PY{k+kn}{from} \PY{n+nn}{plotly}\PY{n+nn}{.}\PY{n+nn}{offline} \PY{k+kn}{import} \PY{n}{plot}\PY{p}{,} \PY{n}{iplot}\PY{p}{,} \PY{n}{init\PYZus{}notebook\PYZus{}mode}
+\PY{k+kn}{import} \PY{n+nn}{plotly}\PY{n+nn}{.}\PY{n+nn}{express} \PY{k}{as} \PY{n+nn}{px}
+\PY{n}{init\PYZus{}notebook\PYZus{}mode}\PY{p}{(}\PY{n}{connected} \PY{o}{=} \PY{k+kc}{True}\PY{p}{)}
+\PY{k+kn}{import} \PY{n+nn}{plotly}\PY{n+nn}{.}\PY{n+nn}{express} \PY{k}{as} \PY{n+nn}{px}
+\PY{k+kn}{import} \PY{n+nn}{plotly}\PY{n+nn}{.}\PY{n+nn}{graph\PYZus{}objects} \PY{k}{as} \PY{n+nn}{go}
+\PY{k+kn}{from} \PY{n+nn}{plotly}\PY{n+nn}{.}\PY{n+nn}{subplots} \PY{k+kn}{import} \PY{n}{make\PYZus{}subplots}
+
+\PY{o}{!}pip install pgeocode
+\PY{k+kn}{import} \PY{n+nn}{pgeocode}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Requirement already satisfied: pandas in
+/opt/conda/envs/Python-3.9/lib/python3.9/site-packages (1.3.4)
+Requirement already satisfied: python-dateutil>=2.7.3 in
+/opt/conda/envs/Python-3.9/lib/python3.9/site-packages (from pandas) (2.8.2)
+Requirement already satisfied: pytz>=2017.3 in
+/opt/conda/envs/Python-3.9/lib/python3.9/site-packages (from pandas) (2021.3)
+Requirement already satisfied: numpy>=1.17.3 in
+/opt/conda/envs/Python-3.9/lib/python3.9/site-packages (from pandas) (1.20.3)
+Requirement already satisfied: six>=1.5 in
+/opt/conda/envs/Python-3.9/lib/python3.9/site-packages (from python-
+dateutil>=2.7.3->pandas) (1.15.0)
+Requirement already satisfied: urllib3 in
+/opt/conda/envs/Python-3.9/lib/python3.9/site-packages (1.26.7)
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Requirement already satisfied: pgeocode in
+/opt/conda/envs/Python-3.9/lib/python3.9/site-packages (0.3.0)
+Requirement already satisfied: requests in
+/opt/conda/envs/Python-3.9/lib/python3.9/site-packages (from pgeocode) (2.26.0)
+Requirement already satisfied: numpy in
+/opt/conda/envs/Python-3.9/lib/python3.9/site-packages (from pgeocode) (1.20.3)
+Requirement already satisfied: pandas in
+/opt/conda/envs/Python-3.9/lib/python3.9/site-packages (from pgeocode) (1.3.4)
+Requirement already satisfied: python-dateutil>=2.7.3 in
+/opt/conda/envs/Python-3.9/lib/python3.9/site-packages (from pandas->pgeocode)
+(2.8.2)
+Requirement already satisfied: pytz>=2017.3 in
+/opt/conda/envs/Python-3.9/lib/python3.9/site-packages (from pandas->pgeocode)
+(2021.3)
+Requirement already satisfied: six>=1.5 in
+/opt/conda/envs/Python-3.9/lib/python3.9/site-packages (from python-
+dateutil>=2.7.3->pandas->pgeocode) (1.15.0)
+Requirement already satisfied: charset-normalizer\textasciitilde{}=2.0.0 in
+/opt/conda/envs/Python-3.9/lib/python3.9/site-packages (from requests->pgeocode)
+(2.0.4)
+Requirement already satisfied: idna<4,>=2.5 in
+/opt/conda/envs/Python-3.9/lib/python3.9/site-packages (from requests->pgeocode)
+(3.3)
+Requirement already satisfied: certifi>=2017.4.17 in
+/opt/conda/envs/Python-3.9/lib/python3.9/site-packages (from requests->pgeocode)
+(2022.6.15)
+Requirement already satisfied: urllib3<1.27,>=1.21.1 in
+/opt/conda/envs/Python-3.9/lib/python3.9/site-packages (from requests->pgeocode)
+(1.26.7)
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{datasinkPath} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{https://raw.githubusercontent.com/PierreFeillet/decisions\PYZhy{}analytics/main/data/ADS/loanApprovalWithTasks/ads\PYZhy{}22.0.1\PYZhy{}loanapprovalwithtask\PYZhy{}withtrace\PYZhy{}5K.json}\PY{l+s+s2}{\PYZdq{}} \PY{c+c1}{\PYZsh{}startSimulation.json()[\PYZdq{}dataSink\PYZdq{}][\PYZdq{}uri\PYZdq{}]}
+    
+\PY{n}{outputData} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{line} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}
+\PY{k}{for} \PY{n}{line} \PY{o+ow}{in} \PY{n}{urllib}\PY{o}{.}\PY{n}{request}\PY{o}{.}\PY{n}{urlopen}\PY{p}{(}\PY{n}{datasinkPath}\PY{p}{)}\PY{p}{:}
+    \PY{n}{line} \PY{o}{=} \PY{n}{line}\PY{o}{.}\PY{n}{rstrip}\PY{p}{(}\PY{p}{)}
+    \PY{n}{jsonLine} \PY{o}{=} \PY{n+nb}{dict}\PY{p}{(}\PY{p}{)}
+    \PY{n}{line\PYZus{}to\PYZus{}json} \PY{o}{=} \PY{n}{json}\PY{o}{.}\PY{n}{loads}\PY{p}{(}\PY{n}{line}\PY{p}{)}
+    \PY{n}{jsonLine}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{request}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{line\PYZus{}to\PYZus{}json}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{request}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+    \PY{k}{if}\PY{p}{(}\PY{n}{line\PYZus{}to\PYZus{}json}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{trace}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{==}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{empty}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{:} 
+        \PY{n}{jsonLine}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{trace}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{empty}\PY{l+s+s2}{\PYZdq{}} 
+    \PY{k}{else}\PY{p}{:} 
+        \PY{n}{jsonLine}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{trace}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{line\PYZus{}to\PYZus{}json}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{trace}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+    \PY{n}{jsonLine}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{response}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{line\PYZus{}to\PYZus{}json}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{response}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+
+    \PY{n}{outputData}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{jsonLine}\PY{p}{)}
+
+\PY{n}{datasink} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{json\PYZus{}normalize}\PY{p}{(}\PY{n}{outputData}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}datasink = pd.json\PYZus{}normalize(outputData, [\PYZdq{}taskInformation\PYZdq{}, \PYZdq{}ruleInformation\PYZdq{}], [\PYZdq{}totalTasksNotExecuted\PYZdq{}, \PYZdq{}shortname\PYZdq{}, [\PYZdq{}tasksNotExecuted\PYZdq{}, \PYZdq{}taskInformation\PYZdq{}]])}
+\PY{n}{datasink}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   request.loan.amount  request.loan.loanToValue  \textbackslash{}
+0               783440                       0.7
+1              1787385                       0.7
+2              1733494                       0.7
+3              1350004                       0.7
+4              1210944                       0.7
+
+   request.loan.numberOfMonthlyPayments request.loan.startDate  \textbackslash{}
+0                                   162   2005-06-01T00:00:00Z
+1                                   183   2005-06-01T00:00:00Z
+2                                    75   2005-06-01T00:00:00Z
+3                                    72   2005-06-01T00:00:00Z
+4                                   160   2005-06-01T00:00:00Z
+
+  request.borrower.firstName request.borrower.lastName  \textbackslash{}
+0                      Tanya                    Wilson
+1                      Jason                 Contreras
+2                    William                  Lawrence
+3                       Gary                  Guerrero
+4                    Deborah                  Martinez
+
+  request.borrower.zipCode  request.borrower.creditScore  \textbackslash{}
+0                    04250                           736
+1                    85690                           527
+2                    22377                           460
+3                    43401                           751
+4                    32684                           684
+
+  request.borrower.birthDate  request.borrower.yearlyIncome  {\ldots}  \textbackslash{}
+0       1964-05-12T00:00:00Z                         113243  {\ldots}
+1       1915-05-12T00:00:00Z                         224186  {\ldots}
+2       1949-05-12T00:00:00Z                          39954  {\ldots}
+3       1949-05-12T00:00:00Z                         219998  {\ldots}
+4       1900-05-12T00:00:00Z                          72470  {\ldots}
+
+  response.borrower.yearlyIncome response.borrower.spouse  \textbackslash{}
+0                         113243                     None
+1                         224186                     None
+2                          39954                     None
+3                         219998                     None
+4                          72470                     None
+
+  response.borrower.SSN.serialNumber response.borrower.SSN.areaNumber  \textbackslash{}
+0                               6789                              191
+1                               6789                              659
+2                               6789                              599
+3                               6789                              437
+4                               6789                              696
+
+  response.borrower.SSN.groupCode               response.\_\_DecisionID\_\_  \textbackslash{}
+0                              45  260a9e68-b5ad-4da0-8ed4-8af631dc7410
+1                              45  d5fd984a-7384-4ca9-9e5d-14cf26234d44
+2                              45  2a930cf3-604a-4e1b-b44a-59b4a08a5a4b
+3                              45  36eb221a-de1f-45cc-a0c8-674f2bf754e0
+4                              45  2580a8e6-04df-4ec6-a518-1008b1ce9cb9
+
+                                   response.messages response.dataValidated  \textbackslash{}
+0  [Too big Debt/Income ratio, Very low risk loan{\ldots}                   True
+1                   [The loan cannot exceed 1300000]                  False
+2                   [The loan cannot exceed 1300000]                  False
+3                   [The loan cannot exceed 1300000]                  False
+4  [Too big Debt/Income ratio, Very low risk loan{\ldots}                   True
+
+  response.yearlyInterestRate response.insurance
+0                       0.082                NaN
+1                       0.000                NaN
+2                       0.000                NaN
+3                       0.000                NaN
+4                       0.082                NaN
+
+[5 rows x 70 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{business-metrics}{%
+\subsection{2 - Business Metrics}\label{business-metrics}}
+
+From each raw decision we extract or compute a set of metrics. The ratio
+of accepted versus rejected applications is a metric. All raw input and
+output metrics are eligible to be metrics. Main metrics used in this
+report are: - accepted/rejected status, - loan amount, - borrower's
+credit score, - borrower's yearly income
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{plotly}
+\PY{k+kn}{from} \PY{n+nn}{plotly}\PY{n+nn}{.}\PY{n+nn}{offline} \PY{k+kn}{import} \PY{n}{plot}\PY{p}{,} \PY{n}{iplot}\PY{p}{,} \PY{n}{init\PYZus{}notebook\PYZus{}mode}
+\PY{n}{init\PYZus{}notebook\PYZus{}mode}\PY{p}{(}\PY{n}{connected} \PY{o}{=} \PY{k+kc}{True}\PY{p}{)}
+
+\PY{k+kn}{import} \PY{n+nn}{plotly}\PY{n+nn}{.}\PY{n+nn}{express} \PY{k}{as} \PY{n+nn}{px}
+\PY{k+kn}{import} \PY{n+nn}{plotly}\PY{n+nn}{.}\PY{n+nn}{graph\PYZus{}objects} \PY{k}{as} \PY{n+nn}{go}
+\PY{k+kn}{from} \PY{n+nn}{plotly}\PY{n+nn}{.}\PY{n+nn}{subplots} \PY{k+kn}{import} \PY{n}{make\PYZus{}subplots}
+
+\PY{c+c1}{\PYZsh{}Graph configs}
+\PY{n}{approval\PYZus{}colors} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{}00CC96}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{}FF6692}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+\PY{n}{color\PYZus{}indices} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}
+
+\PY{n}{pie\PYZus{}chart\PYZus{}approval\PYZus{}loan\PYZus{}names} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{approved}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rejected}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{pie\PYZus{}chart\PYZus{}loan\PYZus{}amount\PYZus{}names} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{approved amount}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rejected amount}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{bidirectional\PYZus{}bar\PYZus{}chart\PYZus{}label\PYZus{}v2}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{number of applications}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sum of applications amounts}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{bidirectional\PYZus{}bar\PYZus{}chart\PYZus{}label}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{number of applications}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sum of applications amounts}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{bidirectional\PYZus{}bar\PYZus{}chart\PYZus{}label}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{number of rejected applications}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sum of rejected applications amounts}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{number of approved applications}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sum of approved applications amounts}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{radar\PYZus{}chart\PYZus{}labels}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{number of rejected applications}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sum of rejected applications amounts}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{number of approved applications}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sum of approved applications amounts}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ratio approved/requested}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{} Metrics \PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}}
+\PY{n}{select\PYZus{}approved\PYZus{}decision} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{`response.approved` == True}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{select\PYZus{}rejected\PYZus{}decision} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{`response.approved` == False}\PY{l+s+s1}{\PYZsq{}}
+
+\PY{n}{get\PYZus{}decision\PYZus{}approval} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{response.approved}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{get\PYZus{}decision\PYZus{}amount} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{response.loan.amount}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{get\PYZus{}decision\PYZus{}borrower\PYZus{}zipcode} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{response.borrower.zipCode}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{get\PYZus{}decision\PYZus{}borrower\PYZus{}yearly\PYZus{}income} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{response.borrower.yearlyIncome}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{get\PYZus{}decision\PYZus{}borrower\PYZus{}credit\PYZus{}score} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{response.borrower.creditScore}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{get\PYZus{}decision\PYZus{}id} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{response.\PYZus{}\PYZus{}DecisionID\PYZus{}\PYZus{}}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{get\PYZus{}decision\PYZus{}reimbursement\PYZus{}rate} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{response.yearlyInterestRate}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{get\PYZus{}decision\PYZus{}monthly\PYZus{}repayment} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{response.monthlyRepayment}\PY{l+s+s1}{\PYZsq{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{business-kpis}{%
+\subsection{3 - Business KPIs}\label{business-kpis}}
+
+Key Performance Indicators are aggregated counters to judge the decision
+set. Examples of basic KPIs for loan approval are: - Sum of approved
+applications / total number of applications - Sum of rejected
+applications / total number of applications - Total of approved loan
+amounts - Total of rejected loan amounts
+
+Only limits are the imagination and computational power of Python, Scala
+or R languages.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{} KPI \PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}}
+\PY{n}{approved\PYZus{}loan} \PY{o}{=} \PY{n}{datasink}\PY{o}{.}\PY{n}{query}\PY{p}{(}\PY{n}{select\PYZus{}approved\PYZus{}decision}\PY{p}{)}
+\PY{n}{rejected\PYZus{}loan} \PY{o}{=} \PY{n}{datasink}\PY{o}{.}\PY{n}{query}\PY{p}{(}\PY{n}{select\PYZus{}rejected\PYZus{}decision}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{} Approved/Rejected PRINT \PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of approved loan request = }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{approved\PYZus{}loan}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of rejected loan request = }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{rejected\PYZus{}loan}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Rate of approval = }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{approved\PYZus{}loan}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{/}\PY{n}{datasink}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Total approved amount = }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{datasink}\PY{o}{.}\PY{n}{query}\PY{p}{(}\PY{n}{select\PYZus{}approved\PYZus{}decision}\PY{p}{)}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}amount}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Total rejected amount = }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{datasink}\PY{o}{.}\PY{n}{query}\PY{p}{(}\PY{n}{select\PYZus{}rejected\PYZus{}decision}\PY{p}{)}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}amount}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Total requested amount = }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{datasink}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}amount}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Number of approved loan request =  936
+Number of rejected loan request =  4064
+Rate of approval =  0.1872
+Total approved amount =  277070430
+Total rejected amount =  4765681958
+Total requested amount =  5042752388
+    \end{Verbatim}
+
+    \hypertarget{visualization}{%
+\subsection{3 - Visualization}\label{visualization}}
+
+\hypertarget{approval-vs-rejection}{%
+\subsubsection{3.1 Approval vs Rejection}\label{approval-vs-rejection}}
+
+We use donut representations to get an overview of the acceptation of
+the loans, in terms of number of applications and loan amounts.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{} settings \PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}}
+\PY{n}{donut\PYZus{}hole} \PY{o}{=} \PY{l+m+mf}{0.7}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{} Approved/Rejected PIE CHART \PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}}
+\PY{n}{trace\PYZus{}approval} \PY{o}{=} \PY{n}{go}\PY{o}{.}\PY{n}{Pie}\PY{p}{(}\PY{n}{labels} \PY{o}{=} \PY{n}{pie\PYZus{}chart\PYZus{}approval\PYZus{}loan\PYZus{}names}\PY{p}{,}
+                            \PY{n}{values} \PY{o}{=} \PY{p}{[}\PY{n}{approved\PYZus{}loan}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{rejected\PYZus{}loan}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}\PY{p}{,}
+                            \PY{n}{hole} \PY{o}{=} \PY{n}{donut\PYZus{}hole}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{} Approved/Rejected Amount PIE CHART \PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}}
+\PY{n}{trace\PYZus{}amount} \PY{o}{=} \PY{n}{go}\PY{o}{.}\PY{n}{Pie}\PY{p}{(}\PY{n}{values}\PY{o}{=} \PY{p}{[}\PY{n}{datasink}\PY{o}{.}\PY{n}{query}\PY{p}{(}\PY{n}{select\PYZus{}approved\PYZus{}decision}\PY{p}{)}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}amount}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+                                 \PY{n}{datasink}\PY{o}{.}\PY{n}{query}\PY{p}{(}\PY{n}{select\PYZus{}rejected\PYZus{}decision}\PY{p}{)}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}amount}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{,}
+                            \PY{n}{labels}\PY{o}{=}\PY{n}{pie\PYZus{}chart\PYZus{}loan\PYZus{}amount\PYZus{}names}\PY{p}{,}
+                            \PY{n}{hole} \PY{o}{=} \PY{n}{donut\PYZus{}hole}\PY{p}{,}
+                            \PY{n}{name}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Loan amount}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{fig} \PY{o}{=} \PY{n}{make\PYZus{}subplots}\PY{p}{(}\PY{n}{rows}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{cols}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,}
+                    \PY{n}{specs}\PY{o}{=}\PY{p}{[}\PY{p}{[}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{type}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{pie}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{type}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{pie}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{]}\PY{p}{]}\PY{p}{,}
+                    \PY{n}{column\PYZus{}widths}\PY{o}{=}\PY{p}{[}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{l+m+mf}{0.5}\PY{p}{]}\PY{p}{,}
+                    \PY{c+c1}{\PYZsh{}vertical\PYZus{}spacing=0.001,}
+                    \PY{n}{subplot\PYZus{}titles}\PY{o}{=}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Approval}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Approved/rejected amount}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+                    \PY{p}{)}
+
+\PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}trace}\PY{p}{(}\PY{n}{trace\PYZus{}approval}\PY{p}{,} \PY{n}{row}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{col}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}trace}\PY{p}{(}\PY{n}{trace\PYZus{}amount}\PY{p}{,} \PY{n}{row}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{col}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}traces}\PY{p}{(}\PY{n}{hoverinfo}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{label}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{textinfo}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{value}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{textfont\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{15}\PY{p}{,} \PY{n}{textposition}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{outside}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                  \PY{n}{marker}\PY{o}{=}\PY{n+nb}{dict}\PY{p}{(}\PY{n}{colors}\PY{o}{=}\PY{n}{approval\PYZus{}colors}\PY{p}{,} \PY{n}{line}\PY{o}{=}\PY{n+nb}{dict}\PY{p}{(}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsh{}FFFFFF}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{width}\PY{o}{=}\PY{l+m+mi}{7}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+                
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}annotations}\PY{p}{(}\PY{n}{yshift}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{)} \PY{c+c1}{\PYZsh{} subplot tiltes}
+
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}layout}\PY{p}{(}
+    \PY{n}{barmode}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{stack}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{plot\PYZus{}bgcolor} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{white}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{c+c1}{\PYZsh{}paper\PYZus{}bgcolor = \PYZsq{}lightgray\PYZsq{},}
+    \PY{n}{height}\PY{o}{=}\PY{l+m+mi}{600}\PY{p}{,}
+    \PY{n}{title}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{text}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{number of applications}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{ and }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{sum of applications amounts}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+          \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mf}{0.5}\PY{p}{,}
+          \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mf}{0.98}\PY{p}{,}
+          \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{xanchor}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{center}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+          \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{font\PYZus{}size}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+m+mi}{20}
+    \PY{p}{\PYZcb{}}\PY{p}{,}
+    \PY{n}{annotations}\PY{o}{=} \PY{p}{[}
+         \PY{p}{\PYZob{}}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{font}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{\PYZob{}}
+               \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{size}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{15}
+            \PY{p}{\PYZcb{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{showarrow}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{k+kc}{False}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{text}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZlt{}b\PYZgt{}Approval\PYZlt{}/b\PYZgt{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{x}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{0.23}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{y}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{0.42}
+         \PY{p}{\PYZcb{}}\PY{p}{,}
+         \PY{p}{\PYZob{}}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{font}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{\PYZob{}}
+               \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{size}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{15}
+            \PY{p}{\PYZcb{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{showarrow}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{k+kc}{False}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{text}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZlt{}b\PYZgt{}Total amount\PYZlt{}/b\PYZgt{}\PYZlt{}br\PYZgt{} approved/rejected}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{x}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{0.775}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{y}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{0.4}
+         \PY{p}{\PYZcb{}}
+      \PY{p}{]}\PY{p}{,}
+      \PY{p}{)}
+
+\PY{n}{iplot}\PY{p}{(}\PY{n}{fig}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    
+    \hypertarget{represent-the-decisions-in-a-yearly-income-loand-amount-and-approval-outcome-space}{%
+\subsubsection{3.2 Represent the decisions in a yearly income, loand
+amount, and approval outcome
+space}\label{represent-the-decisions-in-a-yearly-income-loand-amount-and-approval-outcome-space}}
+
+We leverage a scatter component to represent all decisions. Each
+decision is colored in pink if refused or green if accepted. The circle
+radius depends on the amount. You can zoom in, select one decision, and
+get a tooltip with a summary of the decision.
+
+We added 2 lines in the view: - one horizontal line that matches a
+business rule that rejectsany application with a loan amount greater
+than 1 M. - one diagonal that separates the population of never accepted
+application from one where accepted applications are concentrated. This
+observation is consistent with busines rules that enforced a maximum
+income/reimbursement ratio.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{array\PYZus{}normalize}\PY{p}{(}\PY{n}{values}\PY{p}{,} \PY{n}{max\PYZus{}value}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+    \PY{n}{normalized\PYZus{}values} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{value} \PY{o+ow}{in} \PY{n}{values}\PY{p}{:}
+        \PY{n}{normalized\PYZus{}values}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{(}\PY{n}{value}\PY{o}{*}\PY{n}{max\PYZus{}value}\PY{p}{)}\PY{o}{/}\PY{n+nb}{max}\PY{p}{(}\PY{n}{values}\PY{p}{)}\PY{p}{)}
+    \PY{k}{return} \PY{n}{normalized\PYZus{}values}
+
+\PY{k}{def} \PY{n+nf}{set\PYZus{}colors}\PY{p}{(}\PY{n}{values}\PY{p}{,} \PY{n}{true\PYZus{}color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{}00CC96}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{false\PYZus{}color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{}FF6692}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{:}
+    \PY{n}{colors} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{value} \PY{o+ow}{in} \PY{n}{values}\PY{p}{:}
+        \PY{k}{if}\PY{p}{(}\PY{n}{value}\PY{p}{)}\PY{p}{:} 
+            \PY{n}{colors}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{true\PYZus{}color}\PY{p}{)} 
+        \PY{k}{else}\PY{p}{:} 
+            \PY{n}{colors}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{false\PYZus{}color}\PY{p}{)} 
+    \PY{k}{return} \PY{n}{colors}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fig} \PY{o}{=} \PY{n}{go}\PY{o}{.}\PY{n}{Figure}\PY{p}{(}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}trace}\PY{p}{(}\PY{n}{go}\PY{o}{.}\PY{n}{Scatter}\PY{p}{(}
+                 \PY{n}{x}\PY{o}{=}\PY{n}{datasink}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}borrower\PYZus{}yearly\PYZus{}income}\PY{p}{]}\PY{p}{,}
+                 \PY{n}{y}\PY{o}{=}\PY{n}{datasink}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}amount}\PY{p}{]}\PY{p}{,}
+                 \PY{n}{mode}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{markers}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                 \PY{n}{marker\PYZus{}size}\PY{o}{=}\PY{n}{array\PYZus{}normalize}\PY{p}{(}\PY{n}{datasink}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}borrower\PYZus{}credit\PYZus{}score}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{20}\PY{p}{)}\PY{p}{,} 
+                 \PY{n}{marker\PYZus{}color}\PY{o}{=}\PY{n}{set\PYZus{}colors}\PY{p}{(}\PY{n}{datasink}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}approval}\PY{p}{]}\PY{p}{)}\PY{p}{,}
+                 \PY{n}{text}\PY{o}{=}\PY{n}{datasink}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}approval}\PY{p}{]}\PY{p}{,} 
+                 \PY{n}{hovertext}\PY{o}{=}\PY{n}{datasink}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}id}\PY{p}{]}\PY{p}{,}
+                 \PY{n}{hovertemplate}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZlt{}b\PYZgt{}Income:\PYZlt{}/b\PYZgt{} }\PY{l+s+s2}{\PYZpc{}}\PY{l+s+si}{\PYZob{}x\PYZcb{}}\PY{l+s+s2}{\PYZlt{}br\PYZgt{}\PYZlt{}b\PYZgt{}Loan amount:\PYZlt{}/b\PYZgt{} }\PY{l+s+s2}{\PYZpc{}}\PY{l+s+si}{\PYZob{}y\PYZcb{}}\PY{l+s+s2}{\PYZlt{}br\PYZgt{}\PYZlt{}b\PYZgt{}Approval:\PYZlt{}/b\PYZgt{} }\PY{l+s+s2}{\PYZpc{}}\PY{l+s+si}{\PYZob{}text\PYZcb{}}\PY{l+s+s2}{\PYZlt{}br\PYZgt{}\PYZlt{}b\PYZgt{}Id:\PYZlt{}/b\PYZgt{} }\PY{l+s+s2}{\PYZpc{}}\PY{l+s+si}{\PYZob{}hovertext\PYZcb{}}\PY{l+s+s2}{\PYZlt{}extra\PYZgt{}\PYZlt{}/extra\PYZgt{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                 \PY{n}{name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{V1}\PY{l+s+s1}{\PYZsq{}}
+\PY{p}{)}\PY{p}{)}
+
+
+\PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}trace}\PY{p}{(}
+    \PY{n}{go}\PY{o}{.}\PY{n}{Scatter}\PY{p}{(}
+        \PY{n}{x}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{n+nb}{max}\PY{p}{(}\PY{n}{datasink}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}borrower\PYZus{}yearly\PYZus{}income}\PY{p}{]}\PY{p}{)}\PY{p}{]}\PY{p}{)}\PY{p}{,}
+        \PY{n}{y}\PY{o}{=}\PY{n+nb}{max}\PY{p}{(}\PY{n}{datasink}\PY{o}{.}\PY{n}{query}\PY{p}{(}\PY{n}{select\PYZus{}approved\PYZus{}decision}\PY{p}{)}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}amount}\PY{p}{]}\PY{o}{/}\PY{n}{datasink}\PY{o}{.}\PY{n}{query}\PY{p}{(}\PY{n}{select\PYZus{}approved\PYZus{}decision}\PY{p}{)}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}borrower\PYZus{}yearly\PYZus{}income}\PY{p}{]}\PY{p}{)}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{n+nb}{max}\PY{p}{(}\PY{n}{datasink}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}borrower\PYZus{}yearly\PYZus{}income}\PY{p}{]}\PY{p}{)}\PY{p}{]}\PY{p}{)}\PY{p}{,}
+        \PY{n}{mode}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{lines}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+        \PY{n}{line}\PY{o}{=}\PY{n}{go}\PY{o}{.}\PY{n}{scatter}\PY{o}{.}\PY{n}{Line}\PY{p}{(}\PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{}109618}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,}
+        \PY{n}{showlegend}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}trace}\PY{p}{(}
+    \PY{n}{go}\PY{o}{.}\PY{n}{Scatter}\PY{p}{(}
+        \PY{n}{x}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{n+nb}{max}\PY{p}{(}\PY{n}{datasink}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}borrower\PYZus{}yearly\PYZus{}income}\PY{p}{]}\PY{p}{)}\PY{p}{]}\PY{p}{)}\PY{p}{,}
+        \PY{n}{y}\PY{o}{=}\PY{n+nb}{max}\PY{p}{(}\PY{n}{datasink}\PY{o}{.}\PY{n}{query}\PY{p}{(}\PY{n}{select\PYZus{}approved\PYZus{}decision}\PY{p}{)}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}amount}\PY{p}{]}\PY{p}{)}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{p}{,}
+        \PY{n}{mode}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{lines}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+        \PY{n}{line}\PY{o}{=}\PY{n}{go}\PY{o}{.}\PY{n}{scatter}\PY{o}{.}\PY{n}{Line}\PY{p}{(}\PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZsh{}B82E2E}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{c+c1}{\PYZsh{}\PYZsh{}B82E2E}
+        \PY{n}{showlegend}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\PY{p}{)}
+
+
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}xaxes}\PY{p}{(}\PY{n}{title\PYZus{}text}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Yearly income}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}yaxes}\PY{p}{(}\PY{n}{title\PYZus{}text}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Loan amount}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}layout}\PY{p}{(}
+    \PY{n}{barmode}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{stack}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+    \PY{n}{showlegend}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,}
+    \PY{n}{title}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{text}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Behaviours according to income and loan amounts}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+          \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mf}{0.5}\PY{p}{,}
+          \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{xanchor}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{center}\PY{l+s+s1}{\PYZsq{}}
+    \PY{p}{\PYZcb{}}\PY{p}{)}
+
+\PY{n}{iplot}\PY{p}{(}\PY{n}{fig}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    
+    \hypertarget{visualize-approvals-on-yearly-income-and-credit-scores}{%
+\subsubsection{3.3 Visualize approvals on yearly income and credit
+scores}\label{visualize-approvals-on-yearly-income-and-credit-scores}}
+
+We use a scatter view to represent the decisions this time with yearly
+income and credit score. We observe 2 gradients that cumulate their
+effects: - the higher yearly income is the more likelyhood to get the
+loan accepted - the higher is the credit score the more likelyhood to
+get the loan accepted
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{} SCATTER CHART \PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}\PYZsh{}}
+\PY{n}{fig} \PY{o}{=} \PY{n}{go}\PY{o}{.}\PY{n}{Figure}\PY{p}{(}\PY{p}{)}
+\PY{n}{max\PYZus{}marker\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{30}
+\PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}trace}\PY{p}{(}\PY{n}{go}\PY{o}{.}\PY{n}{Scatter}\PY{p}{(}
+                 \PY{n}{x}\PY{o}{=}\PY{n}{datasink}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}borrower\PYZus{}yearly\PYZus{}income}\PY{p}{]}\PY{p}{,}
+                 \PY{n}{y}\PY{o}{=}\PY{n}{datasink}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}borrower\PYZus{}credit\PYZus{}score}\PY{p}{]}\PY{p}{,}
+                 \PY{n}{mode}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{markers}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                 \PY{n}{marker\PYZus{}size}\PY{o}{=}\PY{n}{array\PYZus{}normalize}\PY{p}{(}\PY{n}{datasink}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}amount}\PY{p}{]}\PY{p}{,} \PY{n}{max\PYZus{}marker\PYZus{}size}\PY{p}{)}\PY{p}{,} 
+                 \PY{n}{marker\PYZus{}color}\PY{o}{=}\PY{n}{set\PYZus{}colors}\PY{p}{(}\PY{n}{datasink}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}approval}\PY{p}{]}\PY{p}{)}\PY{p}{,}
+                 \PY{n}{text}\PY{o}{=}\PY{n}{datasink}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}approval}\PY{p}{]}\PY{p}{,} 
+                 \PY{n}{hovertemplate}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZlt{}b\PYZgt{}Income:\PYZlt{}/b\PYZgt{} }\PY{l+s+s2}{\PYZpc{}}\PY{l+s+si}{\PYZob{}x\PYZcb{}}\PY{l+s+s2}{\PYZlt{}br\PYZgt{}\PYZlt{}b\PYZgt{}creditScore:\PYZlt{}/b\PYZgt{} }\PY{l+s+s2}{\PYZpc{}}\PY{l+s+si}{\PYZob{}y\PYZcb{}}\PY{l+s+s2}{\PYZlt{}br\PYZgt{}\PYZlt{}b\PYZgt{}Approval:\PYZlt{}/b\PYZgt{} }\PY{l+s+s2}{\PYZpc{}}\PY{l+s+si}{\PYZob{}text\PYZcb{}}\PY{l+s+s2}{\PYZlt{}extra\PYZgt{}\PYZlt{}/extra\PYZgt{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                 \PY{n}{name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{V1}\PY{l+s+s1}{\PYZsq{}}
+\PY{p}{)}\PY{p}{)}
+
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}xaxes}\PY{p}{(}\PY{n}{title\PYZus{}text}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Yearly income}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}yaxes}\PY{p}{(}\PY{n}{title\PYZus{}text}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Credit score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}layout}\PY{p}{(}
+    \PY{n}{barmode}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{stack}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+    \PY{n}{showlegend}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,}
+    \PY{n}{title}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{text}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{creditScore vs Income}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+          \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mf}{0.5}\PY{p}{,}
+          \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{xanchor}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{center}\PY{l+s+s1}{\PYZsq{}}
+    \PY{p}{\PYZcb{}}\PY{p}{)}
+
+\PY{n}{iplot}\PY{p}{(}\PY{n}{fig}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    
+    \hypertarget{visualize-multiple-business-kpis}{%
+\subsubsection{3.4 Visualize Multiple Business
+KPIs}\label{visualize-multiple-business-kpis}}
+
+We use a radar (named too as Kiviat diagram or spyder) to represent the
+relative performances of the decision set.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fig} \PY{o}{=} \PY{n}{go}\PY{o}{.}\PY{n}{Figure}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}radar dimension normalization }
+\PY{n}{radar\PYZus{}max\PYZus{}value} \PY{o}{=} \PY{l+m+mi}{100}
+
+\PY{n}{values} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{n}{datasink}\PY{o}{.}\PY{n}{query}\PY{p}{(}\PY{n}{select\PYZus{}rejected\PYZus{}decision}\PY{p}{)}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} 
+                    \PY{n}{datasink}\PY{o}{.}\PY{n}{query}\PY{p}{(}\PY{n}{select\PYZus{}rejected\PYZus{}decision}\PY{p}{)}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}amount}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{,} 
+                    \PY{n}{datasink}\PY{o}{.}\PY{n}{query}\PY{p}{(}\PY{n}{select\PYZus{}approved\PYZus{}decision}\PY{p}{)}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} 
+                    \PY{n}{datasink}\PY{o}{.}\PY{n}{query}\PY{p}{(}\PY{n}{select\PYZus{}approved\PYZus{}decision}\PY{p}{)}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}amount}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{,} 
+                    \PY{n}{datasink}\PY{o}{.}\PY{n}{query}\PY{p}{(}\PY{n}{select\PYZus{}approved\PYZus{}decision}\PY{p}{)}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{/}\PY{p}{(}\PY{n}{datasink}\PY{o}{.}\PY{n}{query}\PY{p}{(}\PY{n}{select\PYZus{}approved\PYZus{}decision}\PY{p}{)}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{+}\PY{n}{datasink}\PY{o}{.}\PY{n}{query}\PY{p}{(}\PY{n}{select\PYZus{}rejected\PYZus{}decision}\PY{p}{)}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+                   \PY{p}{]}\PY{p}{,}
+                   \PY{p}{[}
+                    \PY{n}{datasink}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+                    \PY{n}{datasink}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}amount}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+                    \PY{n}{datasink}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+                    \PY{n}{datasink}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}amount}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+                    \PY{l+m+mi}{1}
+                   \PY{p}{]}
+                  \PY{p}{]}\PY{p}{)}
+\PY{n}{normed\PYZus{}values} \PY{o}{=} \PY{p}{(}\PY{n}{values}\PY{o}{*}\PY{n}{radar\PYZus{}max\PYZus{}value}\PY{p}{)} \PY{o}{/} \PY{n}{values}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+
+\PY{k}{def} \PY{n+nf}{radar\PYZus{}normalization}\PY{p}{(}\PY{n}{values}\PY{p}{,} \PY{n}{max\PYZus{}value}\PY{p}{)}\PY{p}{:}
+    \PY{n}{normalized\PYZus{}values} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{value} \PY{o+ow}{in} \PY{n}{values}\PY{p}{:}
+        \PY{n}{normalized\PYZus{}values}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{(}\PY{n}{value}\PY{o}{*}\PY{n}{max\PYZus{}value}\PY{p}{)}\PY{o}{/}\PY{n+nb}{max}\PY{p}{(}\PY{n}{values}\PY{p}{)}\PY{p}{)}
+    \PY{k}{return} \PY{n}{normalized\PYZus{}values}
+
+\PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}trace}\PY{p}{(}\PY{n}{go}\PY{o}{.}\PY{n}{Scatterpolar}\PY{p}{(}
+      \PY{n}{r}\PY{o}{=}\PY{n}{normed\PYZus{}values}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+      \PY{n}{theta}\PY{o}{=}\PY{n}{radar\PYZus{}chart\PYZus{}labels}\PY{p}{,}
+      \PY{n}{marker\PYZus{}color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rgb(0,204,150)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+      \PY{n}{fillcolor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rgba(0,204,150,0.4)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+      \PY{n}{fill}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{toself}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+      \PY{n}{name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{V1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+\PY{p}{)}\PY{p}{)}
+
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}layout}\PY{p}{(}
+  \PY{n}{height}\PY{o}{=}\PY{l+m+mi}{800}\PY{p}{,}
+  \PY{n}{polar}\PY{o}{=}\PY{n+nb}{dict}\PY{p}{(}
+    \PY{c+c1}{\PYZsh{}bgcolor= \PYZsq{}rgb(239, 239, 232)\PYZsq{},}
+    \PY{n}{radialaxis}\PY{o}{=}\PY{n+nb}{dict}\PY{p}{(}
+      \PY{n}{visible}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}
+      \PY{n+nb}{range}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{radar\PYZus{}max\PYZus{}value}\PY{p}{]}\PY{p}{,}
+      \PY{c+c1}{\PYZsh{}linecolor=\PYZsq{}red\PYZsq{},}
+      \PY{c+c1}{\PYZsh{}gridcolor=\PYZsq{}red\PYZsq{},}
+      \PY{c+c1}{\PYZsh{}axiscolor=\PYZsq{}red\PYZsq{},}
+      \PY{c+c1}{\PYZsh{}tickcolor=\PYZsq{}red\PYZsq{},}
+    \PY{p}{)}\PY{p}{)}\PY{p}{,}
+  \PY{c+c1}{\PYZsh{}showlegend=False}
+\PY{p}{)}
+
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    
+    \hypertarget{show-the-approval-distributions}{%
+\subsubsection{3.5 Show the approval
+distributions}\label{show-the-approval-distributions}}
+
+We use violon representations to show the distributions of the approved
+versus rejected applications projected on the loan amount dimension. As
+a confirmation accepted applications are under the 1M limit and are
+concentrated on low amounts.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{subplot\PYZus{}titles} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Approved}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Rejected}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{select\PYZus{}decision\PYZus{}approval\PYZus{}status} \PY{o}{=} \PY{p}{[}\PY{n}{select\PYZus{}approved\PYZus{}decision}\PY{p}{,} \PY{n}{select\PYZus{}rejected\PYZus{}decision}\PY{p}{]}
+\PY{n}{get\PYZus{}decision\PYZus{}value} \PY{o}{=} \PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}amount}\PY{p}{,} \PY{n}{get\PYZus{}decision\PYZus{}amount}\PY{p}{]}
+\PY{n}{fig} \PY{o}{=} \PY{n}{go}\PY{o}{.}\PY{n}{Figure}\PY{p}{(}\PY{p}{)}
+\PY{k}{for} \PY{n}{idx}\PY{p}{,} \PY{n}{approval} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{select\PYZus{}decision\PYZus{}approval\PYZus{}status}\PY{p}{)}\PY{p}{:}
+    \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}trace}\PY{p}{(}\PY{n}{go}\PY{o}{.}\PY{n}{Violin}\PY{p}{(}\PY{n}{y}\PY{o}{=}\PY{n}{datasink}\PY{o}{.}\PY{n}{query}\PY{p}{(}\PY{n}{approval}\PY{p}{)}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}amount}\PY{p}{]}\PY{p}{,}
+                            \PY{n}{name}\PY{o}{=}\PY{n}{subplot\PYZus{}titles}\PY{p}{[}\PY{n}{idx}\PY{p}{]}\PY{p}{,}
+                            \PY{n}{box\PYZus{}visible}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}
+                            \PY{n}{meanline\PYZus{}visible}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}
+                            \PY{n}{points}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{all}\PY{l+s+s1}{\PYZsq{}}
+                            \PY{p}{)}\PY{p}{)}
+
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}yaxes}\PY{p}{(}\PY{n}{title\PYZus{}text}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Loan amount}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}layout}\PY{p}{(}
+    \PY{n}{barmode}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{stack}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+    \PY{n}{showlegend}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,}
+    \PY{n}{title}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{text}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Loan amount according to approval status}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+          \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mf}{0.5}\PY{p}{,}
+          \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{xanchor}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{center}\PY{l+s+s1}{\PYZsq{}}
+    \PY{p}{\PYZcb{}}\PY{p}{)}
+
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    
+    \hypertarget{take-benefit-of-geographical-tagging}{%
+\subsubsection{3.6 - Take benefit of geographical
+tagging}\label{take-benefit-of-geographical-tagging}}
+
+We leverage the zipcode input parameter to locate the borrowers. It can
+help to detect if any correlation between the location (country, state)
+and the approval decision.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Use a MapBox token allocated for SimuLatte demos}
+
+\PY{n}{mapbox\PYZus{}access\PYZus{}token} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{pk.eyJ1IjoicGZlaWxsZXQiLCJhIjoiY2w1aTdmeG14MDVlaTNkcGxpNjRmMGYwdyJ9.2eo04GLwcicGOiAqdDbVuA}\PY{l+s+s2}{\PYZdq{}}
+
+\PY{n}{nomi} \PY{o}{=} \PY{n}{pgeocode}\PY{o}{.}\PY{n}{Nominatim}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{us}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{df}\PY{o}{=}\PY{n}{nomi}\PY{o}{.}\PY{n}{query\PYZus{}postal\PYZus{}code}\PY{p}{(}\PY{n}{datasink}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}borrower\PYZus{}zipcode}\PY{p}{]}\PY{o}{.}\PY{n}{values}\PY{p}{)}
+
+\PY{n}{fig} \PY{o}{=} \PY{n}{go}\PY{o}{.}\PY{n}{Figure}\PY{p}{(}\PY{n}{data}\PY{o}{=}\PY{n}{go}\PY{o}{.}\PY{n}{Scattermapbox}\PY{p}{(}
+        \PY{n}{lon} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{longitude}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+        \PY{n}{lat} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{latitude}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+        \PY{n}{text} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{place\PYZus{}name}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+        \PY{n}{mode} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{markers}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+        \PY{n}{marker}\PY{o}{=}\PY{n}{go}\PY{o}{.}\PY{n}{scattermapbox}\PY{o}{.}\PY{n}{Marker}\PY{p}{(}
+            \PY{n}{size}\PY{o}{=}\PY{n}{array\PYZus{}normalize}\PY{p}{(}\PY{n}{datasink}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}borrower\PYZus{}credit\PYZus{}score}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{20}\PY{p}{)}\PY{p}{,}
+            \PY{n}{color}\PY{o}{=}\PY{n}{set\PYZus{}colors}\PY{p}{(}\PY{n}{datasink}\PY{p}{[}\PY{n}{get\PYZus{}decision\PYZus{}approval}\PY{p}{]}\PY{p}{)}
+        \PY{p}{)}\PY{p}{,}
+        \PY{p}{)}\PY{p}{)}
+
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}layout}\PY{p}{(}
+    \PY{n}{title}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Loan requests localisation}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{autosize}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}
+    \PY{n}{hovermode}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{closest}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{showlegend}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,}
+    \PY{n}{mapbox}\PY{o}{=}\PY{n+nb}{dict}\PY{p}{(}
+        \PY{n}{accesstoken}\PY{o}{=}\PY{n}{mapbox\PYZus{}access\PYZus{}token}\PY{p}{,}
+        \PY{n}{bearing}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,}
+        \PY{n}{center}\PY{o}{=}\PY{n+nb}{dict}\PY{p}{(}
+            \PY{n}{lat}\PY{o}{=}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{latitude}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+            \PY{n}{lon}\PY{o}{=}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{longitude}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+        \PY{p}{)}\PY{p}{,}
+        \PY{n}{pitch}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,}
+        \PY{n}{zoom}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,}
+        \PY{n}{style}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{light}\PY{l+s+s1}{\PYZsq{}}
+    \PY{p}{)}\PY{p}{,}
+\PY{p}{)}
+
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    
+    \hypertarget{go-inside-the-decisions}{%
+\subsection{4 - Go inside the decisions}\label{go-inside-the-decisions}}
+
+We exploit the trace in each of the decision to extract how their
+outcome was computed. We get the executed and we aggregate them to
+understand their coverage for this decision set.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{get\PYZus{}rules}\PY{p}{(}\PY{n}{record}\PY{p}{,} \PY{n}{tasksList}\PY{o}{=}\PY{n+nb}{dict}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+    \PY{n}{rules} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{n}{fromTasks} \PY{o}{=} \PY{n}{tasksList}
+    \PY{k}{if} \PY{n}{record}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{recordType}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{==}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Rule}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{}delete index in fromTasks}
+        \PY{k}{for} \PY{n}{index} \PY{o+ow}{in} \PY{n+nb}{list}\PY{p}{(}\PY{n}{fromTasks}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{[}\PY{p}{:}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{:}
+            \PY{k}{if} \PY{n+nb}{int}\PY{p}{(}\PY{n}{index}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)} \PY{o}{!=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{record}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{recordIndex}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{n+nb}{len}\PY{p}{(}\PY{n}{index}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}\PY{p}{]}\PY{p}{)}\PY{p}{:} 
+                \PY{n}{fromTasks}\PY{o}{.}\PY{n}{pop}\PY{p}{(}\PY{n}{index}\PY{p}{)}
+
+        \PY{n}{fromTasks}\PY{p}{[}\PY{n}{record}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{recordIndex}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]} \PY{o}{=} \PY{n}{record}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{properties}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{name}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+        \PY{n}{record}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{from}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{p}{\PYZob{}}\PY{n}{k}\PY{p}{:}\PY{n}{v} \PY{k}{for} \PY{n}{k}\PY{p}{,}\PY{n}{v} \PY{o+ow}{in} \PY{n}{fromTasks}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{\PYZcb{}}
+        \PY{n}{rules}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{record}\PY{p}{)}
+    \PY{k}{else}\PY{p}{:}
+        \PY{k}{if} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{nestedRecords}\PY{l+s+s2}{\PYZdq{}} \PY{o+ow}{in} \PY{n}{record}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{properties}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{:}
+            \PY{n}{fromTasks}\PY{p}{[}\PY{n}{record}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{recordIndex}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]} \PY{o}{=} \PY{n}{record}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{properties}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{name}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+            \PY{k}{for} \PY{n}{new\PYZus{}record} \PY{o+ow}{in} \PY{n}{record}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{properties}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{nestedRecords}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{:}
+                \PY{n}{rules}\PY{o}{.}\PY{n}{extend}\PY{p}{(}\PY{n}{get\PYZus{}rules}\PY{p}{(}\PY{n}{new\PYZus{}record}\PY{p}{,} \PY{n}{fromTasks}\PY{p}{)}\PY{p}{)}
+    
+    \PY{k}{return} \PY{n}{rules}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{rules} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{not\PYZus{}executed\PYZus{}rules} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{number\PYZus{}of\PYZus{}rules\PYZus{}per\PYZus{}decision} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{number\PYZus{}of\PYZus{}decision} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{outputData}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+    \PY{n}{nested\PYZus{}records} \PY{o}{=} \PY{n}{outputData}\PY{p}{[}\PY{n}{number\PYZus{}of\PYZus{}decision}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{trace}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rootRecord}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{properties}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{nestedRecords}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+    \PY{n}{not\PYZus{}executed\PYZus{}rules}\PY{o}{.}\PY{n}{extend}\PY{p}{(}\PY{n}{outputData}\PY{p}{[}\PY{n}{number\PYZus{}of\PYZus{}decision}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{trace}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rootRecord}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{properties}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{notExecutedTasks}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+    \PY{k}{for} \PY{n}{record} \PY{o+ow}{in} \PY{n}{nested\PYZus{}records}\PY{p}{:}
+        \PY{n}{rules}\PY{o}{.}\PY{n}{extend}\PY{p}{(}\PY{n}{get\PYZus{}rules}\PY{p}{(}\PY{n}{record}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}print(\PYZdq{}RULES : \PYZdq{}, rules)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{rules\PYZus{}counter} \PY{o}{=} \PY{n+nb}{dict}\PY{p}{(}\PY{p}{)}
+\PY{k}{for} \PY{n}{rule} \PY{o+ow}{in} \PY{n}{rules}\PY{p}{:}
+    \PY{k}{if} \PY{n}{rule}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{properties}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{name}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o+ow}{in} \PY{n}{rules\PYZus{}counter}\PY{p}{:}
+        \PY{n}{rules\PYZus{}counter}\PY{p}{[}\PY{n}{rule}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{properties}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{name}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+    \PY{k}{else} \PY{p}{:}
+        \PY{n}{rules\PYZus{}counter}\PY{p}{[}\PY{n}{rule}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{properties}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{name}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{1}
+
+\PY{n}{rules\PYZus{}coverage} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{rules\PYZus{}counter}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Rule}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{rules\PYZus{}coverage}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Percentage}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{=} \PY{p}{(}\PY{n}{rules\PYZus{}coverage}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{*}\PY{l+m+mi}{100}\PY{p}{)}\PY{o}{/}\PY{n}{datasink}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+
+\PY{n}{rules\PYZus{}coverage}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                                                 Rule  Count  Percentage
+0           Validation.borrower.check SSN area number   5000      100.00
+1                           Preparation.initial score   3109       62.18
+2                         Preparation.neverBankruptcy   3109       62.18
+3                                    Preparation.rate   3109       62.18
+4                            Preparation.salary2score   3109       62.18
+5                               Computation.repayment   3109       62.18
+6                            Eligibility.check income   2173       43.46
+7                                   Eligibility.grade   3109       62.18
+8                                   Approval.approval   3109       62.18
+9                        Validation.loan.check amount   1785       35.70
+10                                Insurance.insurance    936       18.72
+11  Validation.borrower.Exclude SSN area numbers f{\ldots}    149        2.98
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{rule-coverage-bar-graph}{%
+\subsubsection{4.1 Rule coverage bar
+graph}\label{rule-coverage-bar-graph}}
+
+This view show all executed rules with its execution percentage. 100\%
+means that the rule has been executed in all decisions. The rule
+coverage empowers business users to check if the statistics of rule
+execution match their expectations and hypothesis when applied to the
+applications, and data in general.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fig} \PY{o}{=} \PY{n}{go}\PY{o}{.}\PY{n}{Figure}\PY{p}{(}\PY{n}{go}\PY{o}{.}\PY{n}{Bar}\PY{p}{(}
+            \PY{n}{x}\PY{o}{=}\PY{n}{rules\PYZus{}coverage}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Count}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,}
+            \PY{n}{y}\PY{o}{=}\PY{n}{rules\PYZus{}coverage}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Rule}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,}
+            \PY{n}{text}\PY{o}{=}\PY{p}{[}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{item}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{ \PYZpc{}}\PY{l+s+s1}{\PYZsq{}} \PY{k}{for} \PY{n}{item} \PY{o+ow}{in} \PY{n}{rules\PYZus{}coverage}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Percentage}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{p}{,}
+            \PY{n}{textposition}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{outside}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{n}{hovertemplate}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZlt{}b\PYZgt{}}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+si}{\PYZob{}y\PYZcb{}}\PY{l+s+s2}{\PYZlt{}/b\PYZgt{}\PYZlt{}br\PYZgt{}\PYZlt{}b\PYZgt{}Count:\PYZlt{}/b\PYZgt{} }\PY{l+s+s2}{\PYZpc{}}\PY{l+s+si}{\PYZob{}x\PYZcb{}}\PY{l+s+s2}{\PYZlt{}br\PYZgt{}\PYZlt{}b\PYZgt{}Percentage:\PYZlt{}/b\PYZgt{} }\PY{l+s+s2}{\PYZpc{}}\PY{l+s+si}{\PYZob{}text\PYZcb{}}\PY{l+s+s2}{\PYZlt{}extra\PYZgt{}\PYZlt{}/extra\PYZgt{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{n}{orientation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{h}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}xaxes}\PY{p}{(}\PY{n}{title\PYZus{}text}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Number of decisions}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}yaxes}\PY{p}{(}\PY{n}{title\PYZus{}text}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Rules}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{fig}\PY{o}{.}\PY{n}{update\PYZus{}layout}\PY{p}{(}
+    \PY{n}{title}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{RULES COVERAGE}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{legend}\PY{o}{=}\PY{n+nb}{dict}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{l+m+mf}{0.029}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{l+m+mf}{1.038}\PY{p}{,} \PY{n}{font\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{,}
+    \PY{n}{margin}\PY{o}{=}\PY{n+nb}{dict}\PY{p}{(}\PY{n}{l}\PY{o}{=}\PY{l+m+mi}{100}\PY{p}{,} \PY{n}{r}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{t}\PY{o}{=}\PY{l+m+mi}{70}\PY{p}{,} \PY{n}{b}\PY{o}{=}\PY{l+m+mi}{70}\PY{p}{)}\PY{p}{,}
+    \PY{n}{height}\PY{o}{=}\PY{l+m+mi}{700}\PY{p}{,}
+    \PY{n}{paper\PYZus{}bgcolor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rgb(248, 248, 255)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{plot\PYZus{}bgcolor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rgb(248, 248, 255)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    
+    \hypertarget{conclusion}{%
+\subsection{Conclusion}\label{conclusion}}
+
+This notebook shows a business report to analyze a volume of loan
+approval decisions. It leverages automated decisions performed by IBM
+Cloud Pak for Business Automation and more precisely Automation Decision
+services. This report has been generated by the SimuLatte project that
+takes care of the simulation and the run of analytics report templates.
+
+Tiémoko Dembele and Pierre Feillet are members of IBM France lab and
+developping actively the SimuLatte project to empower simulations for
+business automation.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
