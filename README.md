@@ -1,2 +1,2 @@
-# decisions-analytics
+# Decisions Analytics
 Decision Automation Analytics
