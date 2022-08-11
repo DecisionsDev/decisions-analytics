@@ -1,7 +1,7 @@
 # Decisions Analytics
 
 This repository gathers first decision datasets captured with ADS and ODM capabilities of IBM Cloud Pak for Business Automation.
-It encompasses too python Jupyter notebooks that apply data science to these automated decisions to get business insights.
+It encompasses too python Jupyter notebooks that apply data science to these automated decisions to get business insights and understand what business rules and ML models have been used.
 
 ## Decision logics
 We cover the following use cases:
