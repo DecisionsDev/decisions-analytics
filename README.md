@@ -10,6 +10,7 @@ We cover the following use cases:
    
 ## Datasets
 For each business use case you find under [data](./data) the datasets of different sizes with the full decisions and the requests only.
+Datasets are under ADS and ODM folder depending what tool has been used to automate the decisions.
 Decisions and requests are serialized in JSON. For small sizes they are shared as regular files; And for larger ones they are shared in parquet. 
 
 ## Analysis of your decisions automated with Automation Decision Services
