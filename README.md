@@ -9,15 +9,13 @@ We cover the following use cases:
    * Client loyalty program
    
 ## Gallery
-![loanapprovals.donuts](docs/images/loanapprovals.donuts.png "loan approvals donuts")
-![loanapprovals.points](docs/images/loanapprovals.points.png "loan approvals points")
-![loanapprovals.donuts](docs/images/loanapprovals.geolocation.png "loan approvals geolocation")
-![loanapprovals.donuts](docs/images/loanapprovals.rulecoverage.png "loan approvals rule coverage")
-
+&nbsp; &nbsp; &nbsp; &nbsp;
+  
 <p align="center">
   <img alt="loanapprovals.donuts" src="./docs/images/loanapprovals.donuts.png" width="25%">
-&nbsp; &nbsp; &nbsp; &nbsp;
   <img alt="loanapprovals.points" src="./docs/images/loanapprovals.points.png" width="25%">
+  <img alt="loanapprovals.geolocation" src="./docs/images/loanapprovals.geolocation.png" width="25%">
+  <img alt="loanapprovals.rulecoverage" src="./docs/images/loanapprovals.rulecoverage.png" width="25%">
 </p>
 
 ## Datasets
