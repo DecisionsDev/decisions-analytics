@@ -8,6 +8,9 @@ We cover the following use cases:
    * Loan approval
    * Client loyalty program
    
+## Gallery
+[loanapprovals.donuts](docs/images/loanapprovals.donuts.png)
+   
 ## Datasets
 For each business use case you find under [data](./data) the datasets of different sizes with the full decisions and the requests only.
 Datasets are under ADS and ODM folder depending what tool has been used to automate the decisions.
