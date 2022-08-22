@@ -14,6 +14,12 @@ We cover the following use cases:
 ![loanapprovals.donuts](docs/images/loanapprovals.geolocation.png "loan approvals geolocation")
 ![loanapprovals.donuts](docs/images/loanapprovals.rulecoverage.png "loan approvals rule coverage")
 
+<p align="center">
+  <img alt="loanapprovals.donuts" src="./docs/images/loanapprovals.donuts.png" width="25%">
+&nbsp; &nbsp; &nbsp; &nbsp;
+  <img alt="loanapprovals.points" src="./docs/images/loanapprovals.points.png" width="25%">
+</p>
+
 ## Datasets
 For each business use case you find under [data](./data) the datasets of different sizes with the full decisions and the requests only.
 Datasets are under ADS and ODM folder depending what tool has been used to automate the decisions.
