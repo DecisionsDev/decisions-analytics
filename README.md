@@ -9,7 +9,7 @@ We cover the following use cases:
    * Client loyalty program
    
 ## Gallery
-[loanapprovals.donuts](docs/images/loanapprovals.donuts.png "loanapprovals.donuts")
+![loanapprovals.donuts](docs/images/loanapprovals.donuts.png "loanapprovals.donuts")
 
 ## Datasets
 For each business use case you find under [data](./data) the datasets of different sizes with the full decisions and the requests only.
