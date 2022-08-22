@@ -9,7 +9,7 @@ We cover the following use cases:
    * Client loyalty program
    
 ## Gallery
-A gallery of graphical views on business KPIs and automation logic coverages.
+A gallery of graphical views on business KPIs and decision automation logic coverages.
 
 <p align="center">
   <img alt="loanapprovals.donuts" src="./docs/images/loanapprovals.donuts.png" width="33%">
