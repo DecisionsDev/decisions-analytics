@@ -32,7 +32,7 @@ For each business use case you find under [data](./data) the datasets of differe
 Datasets are under ADS and ODM folder depending what tool has been used to automate the decisions.
 Decisions and requests are serialized in JSON. For small sizes they are shared as regular files; And for larger ones they are shared in parquet. 
 
-## Analysis of your decisions automated with Automation Decision Services
+## Analyse decisions automated with Automation Decision Services with notebooks
    * [Analyzing loan Approvals](https://nbviewer.org/github/DecisionsDev/decisions-analytics/blob/main/notebooks/ADS/ads-loanvalidation-analytics.ipynb)
    * [Analyzing loyalty program decisions](https://nbviewer.org/github/DecisionsDev/decisions-analytics/blob/main/notebooks/ADS/ads-loyaltyprogram-analytics.ipynb)
    * [Comparing loan approvals with tasks : V1 vs V2](https://nbviewer.org/github/DecisionsDev/decisions-analytics/blob/main/notebooks/ADS/ads-22.0.1-loanapprovalwithtasks-v1-vs-v2-5K.ipynb)
