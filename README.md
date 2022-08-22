@@ -21,7 +21,7 @@ A gallery of graphical views on business KPIs and automation logic coverages.
   <img alt="loanapprovals.championchallenger.kpi.bargraphs" src="./docs/images/loanapprovals.championchallenger.kpi.bargraphs.png" width=33%">
   <img alt="loanapprovals.championchallenger.kpi.violons" src="./docs/images/loanapprovals.championchallenger.kpi.violons.png" width="33%">
   <img alt="loanapprovals.championchallenger.kpi.kiviat" src="./docs/images/loanapprovals.championchallenger.kpi.kiviat.png" width="33%">
-  <img alt="loanapprovals.championchallenger.rules.bargraphs" src="./docs/images/loanapprovals.championchallenger.rules.bargraphs.png" width="33%">
+  <img alt="loanapprovals.championchallenger.rules.bargraphs" src="./docs/images/loanapprovals.championchallenger.rules.bargraphs.png" width="32%">
   <img alt="loanapprovals.championchallenger.rules.diff.bargraphs" src="./docs/images/loanapprovals.championchallenger.rules.diff.bargraphs.png" width=33%">
 
   All these screenshots are extracted from the notebooks shared below.
