@@ -18,6 +18,12 @@ We cover the following use cases:
   <img alt="loanapprovals.rulecoverage" src="./docs/images/loanapprovals.rulecoverage.png" width="33%">
   <img alt="loyaltyprograms.rules.sandkey" src="./docs/images/loyaltyprograms.rules.sandkey.png" width=33%">
   <img alt="loyaltyprograms.rules.sunburst" src="./docs/images/loyaltyprograms.rules.sunburst.png" width="33%">
+  <img alt="loanapprovals.championchallenger.kpi.bargraphs" src="./docs/images/loanapprovals.championchallenger.kpi.bargraphs" width=33%">
+  <img alt="loanapprovals.championchallenger.kpi.violons" src="./docs/images/loanapprovals.championchallenger.kpi.violons" width="33%">
+  <img alt="loanapprovals.championchallenger.kpi.kiviat" src="./docs/images/loanapprovals.championchallenger.kpi.kiviat" width="33%">
+  <img alt="loanapprovals.championchallenger.rules.bargraphs" src="./docs/images/loanapprovals.championchallenger.rules.bargraphs" width="33%">
+  <img alt="loanapprovals.championchallenger.rules.diff.bargraphs" src="./docs/images/loanapprovals.championchallenger.rules.diff.bargraphs" width=33%">
+
 </p>
 
 ## Datasets
