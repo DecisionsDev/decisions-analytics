@@ -16,6 +16,8 @@ We cover the following use cases:
   <img alt="loanapprovals.points" src="./docs/images/loanapprovals.points.png" width="33%">
   <img alt="loanapprovals.geolocation" src="./docs/images/loanapprovals.geolocation.png" width=33%">
   <img alt="loanapprovals.rulecoverage" src="./docs/images/loanapprovals.rulecoverage.png" width="33%">
+  <img alt="loyaltyprograms.rules.sandkey" src="./docs/images/loyaltyprograms.rules.sandkey.png" width=33%">
+  <img alt="loyaltyprograms.rules.sunburst" src="./docs/images/loyaltyprograms.rules.sunburst.png" width="33%">
 </p>
 
 ## Datasets
