@@ -9,8 +9,7 @@ We cover the following use cases:
    * Client loyalty program
    
 ## Gallery
-&nbsp; &nbsp; &nbsp; &nbsp;
-  
+A gallery of views to see KPIs and 
 <p align="center">
   <img alt="loanapprovals.donuts" src="./docs/images/loanapprovals.donuts.png" width="33%">
   <img alt="loanapprovals.points" src="./docs/images/loanapprovals.points.png" width="33%">
@@ -24,6 +23,7 @@ We cover the following use cases:
   <img alt="loanapprovals.championchallenger.rules.bargraphs" src="./docs/images/loanapprovals.championchallenger.rules.bargraphs.png" width="33%">
   <img alt="loanapprovals.championchallenger.rules.diff.bargraphs" src="./docs/images/loanapprovals.championchallenger.rules.diff.bargraphs.png" width=33%">
 
+  These screenshots are extracted from the notebooks shared below.
 </p>
 
 ## Datasets
