@@ -9,7 +9,8 @@ We cover the following use cases:
    * Client loyalty program
    
 ## Gallery
-A gallery of views to see KPIs and 
+A gallery of graphical views on business KPIs and automation logic coverages.
+
 <p align="center">
   <img alt="loanapprovals.donuts" src="./docs/images/loanapprovals.donuts.png" width="33%">
   <img alt="loanapprovals.points" src="./docs/images/loanapprovals.points.png" width="33%">
@@ -23,7 +24,7 @@ A gallery of views to see KPIs and
   <img alt="loanapprovals.championchallenger.rules.bargraphs" src="./docs/images/loanapprovals.championchallenger.rules.bargraphs.png" width="33%">
   <img alt="loanapprovals.championchallenger.rules.diff.bargraphs" src="./docs/images/loanapprovals.championchallenger.rules.diff.bargraphs.png" width=33%">
 
-  These screenshots are extracted from the notebooks shared below.
+  All these screenshots are extracted from the notebooks shared below.
 </p>
 
 ## Datasets
