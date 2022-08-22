@@ -12,10 +12,10 @@ We cover the following use cases:
 &nbsp; &nbsp; &nbsp; &nbsp;
   
 <p align="center">
-  <img alt="loanapprovals.donuts" src="./docs/images/loanapprovals.donuts.png" width="25%">
-  <img alt="loanapprovals.points" src="./docs/images/loanapprovals.points.png" width="25%">
-  <img alt="loanapprovals.geolocation" src="./docs/images/loanapprovals.geolocation.png" width="25%">
-  <img alt="loanapprovals.rulecoverage" src="./docs/images/loanapprovals.rulecoverage.png" width="25%">
+  <img alt="loanapprovals.donuts" src="./docs/images/loanapprovals.donuts.png" width="33%">
+  <img alt="loanapprovals.points" src="./docs/images/loanapprovals.points.png" width="33%">
+  <img alt="loanapprovals.geolocation" src="./docs/images/loanapprovals.geolocation.png" width=33%">
+  <img alt="loanapprovals.rulecoverage" src="./docs/images/loanapprovals.rulecoverage.png" width="33%">
 </p>
 
 ## Datasets
