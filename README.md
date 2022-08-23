@@ -24,7 +24,7 @@ A gallery of graphical views on business KPIs and decision automation logic cove
   <img alt="loanapprovals.championchallenger.rules.bargraphs" src="./docs/images/loanapprovals.championchallenger.rules.bargraphs.png" width="33%">
   <img alt="loanapprovals.championchallenger.rules.diff.bargraphs" src="./docs/images/loanapprovals.championchallenger.rules.diff.bargraphs.png" width=32%">
 
-  All these screenshots are extracted from the notebooks shared below. Some of them are interactive inside the notebooks to navigate into the data.
+  All these screenshots are extracted from the notebooks shared below. Most of them are interactive inside the notebooks to navigate into the data.
 </p>
 
 ## Datasets
