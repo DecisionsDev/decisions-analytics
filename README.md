@@ -4,7 +4,7 @@ This repository first gathers decisions automated with ADS and ODM capabilities 
 It encompasses Python Jupyter notebooks that apply data science to automated decisions to get business insights and to understand how business rules and ML models have participated to the decision making.
 
 ## Decision logics
-We cover the following use cases:
+We cover the following sample use cases:
    * Loan approval
    * Client loyalty program
    
