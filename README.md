@@ -39,5 +39,5 @@ Analyse decisions automated with Automation Decision Services through notebooks:
    * [Comparing loan approvals with tasks : V1 vs V2](https://nbviewer.org/github/DecisionsDev/decisions-analytics/blob/main/notebooks/ADS/ads-22.0.1-loanapprovalwithtasks-v1-vs-v2-5K.ipynb)
 
 Analyse decisions automated with Operational Decision Manager through notebooks:
-   * [Analyzing loan approvals](https://nbviewer.org/github/DecisionsDev/decisions-analytics/blob/main/notebooks/ODM/odm-loanvalidation-simulation-analytics.ipynb)
+   * [Analyzing loan approvals](https://nbviewer.org/github/DecisionsDev/decisions-analytics/blob/main/notebooks/ODM/odm-loanvalidation-analytics.ipynb)
 
